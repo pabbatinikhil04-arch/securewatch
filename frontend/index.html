@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureWatch — Website Security Platform</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">🛡️ SecureWatch</div>
+            <div class="nav-links">
+                <a href="#dashboard" data-view="dashboard-view" class="nav-link active">Dashboard</a>
+                <a href="#websites" data-view="websites-view" class="nav-link">Websites</a>
+                <a href="#alerts" data-view="alerts-view" class="nav-link">Alerts</a>
+            </div>
+            <div class="nav-user">
+                <span id="userName">Guest</span>
+                <button id="loginBtn" class="btn btn-ghost" onclick="showLoginModal()">Login</button>
+                <button id="registerBtn" class="btn btn-ghost" onclick="showRegisterModal()">Register</button>
+                <button id="logoutBtn" class="btn btn-ghost" style="display:none;" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+
+            <!-- DASHBOARD VIEW -->
+            <section id="dashboard-view" class="view active">
+                <div class="stats-grid">
+                    <div class="stat-card"><div class="stat-value" id="totalWebsites">0</div><div class="stat-label">Total Websites</div></div>
+                    <div class="stat-card"><div class="stat-value" id="activeWebsites">0</div><div class="stat-label">Active</div></div>
+                    <div class="stat-card"><div class="stat-value" id="totalAlerts">0</div><div class="stat-label">Total Alerts</div></div>
+                    <div class="stat-card stat-card-critical"><div class="stat-value" id="criticalAlerts">0</div><div class="stat-label">Critical</div></div>
+                </div>
+
+                <div class="quick-actions">
+                    <button class="btn btn-primary" onclick="showAddWebsiteModal()">➕ Add Website</button>
+                    <button class="btn btn-secondary" onclick="scanAllWebsites()">🔄 Scan All</button>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <h2>Recent Alerts</h2>
+                        <a href="#alerts" data-view="alerts-view" class="nav-link section-link">View all →</a>
+                    </div>
+                    <div id="recentAlerts"><div class="empty-state">No alerts</div></div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <h2>Monitored Websites</h2>
+                        <a href="#websites" data-view="websites-view" class="nav-link section-link">View all →</a>
+                    </div>
+                    <div id="dashboardWebsitesGrid"><div class="empty-state">No websites added</div></div>
+                </div>
+            </section>
+
+            <!-- WEBSITES VIEW -->
+            <section id="websites-view" class="view">
+                <div class="section-header">
+                    <h2>Monitored Websites</h2>
+                    <div class="quick-actions quick-actions-inline">
+                        <button class="btn btn-primary" onclick="showAddWebsiteModal()">➕ Add Website</button>
+                        <button class="btn btn-secondary" onclick="scanAllWebsites()">🔄 Scan All</button>
+                    </div>
+                </div>
+                <div class="section">
+                    <div id="websitesGrid"><div class="empty-state">No websites added</div></div>
+                </div>
+            </section>
+
+            <!-- ALERTS VIEW -->
+            <section id="alerts-view" class="view">
+                <div class="section-header">
+                    <h2>All Alerts</h2>
+                </div>
+                <div class="section">
+                    <div id="allAlerts"><div class="empty-state">No alerts</div></div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <div class="modal" id="addWebsiteModal">
+        <div class="modal-content">
+            <h2>Add Website</h2>
+            <form onsubmit="addWebsite(event)">
+                <input type="url" id="websiteUrl" placeholder="https://example.com" required>
+                <input type="text" id="websiteName" placeholder="Website Name" required maxlength="100">
+                <button type="submit" class="btn btn-primary">Add</button>
+                <button type="button" class="btn btn-ghost" onclick="closeModal('addWebsiteModal')">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <h2>Login</h2>
+            <form onsubmit="login(event)">
+                <input type="text" id="loginUsername" placeholder="Username" required autocomplete="username">
+                <input type="password" id="loginPassword" placeholder="Password" required autocomplete="current-password">
+                <button type="submit" class="btn btn-primary">Login</button>
+                <button type="button" class="btn btn-ghost" onclick="closeModal('loginModal')">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <h2>Register</h2>
+            <form onsubmit="register(event)">
+                <input type="text" id="registerUsername" placeholder="Username" required minlength="3" maxlength="50" autocomplete="username">
+                <input type="email" id="registerEmail" placeholder="Email" required autocomplete="email">
+                <input type="password" id="registerPassword" placeholder="Password (min 12 characters)" required minlength="12" autocomplete="new-password">
+                <button type="submit" class="btn btn-primary">Register</button>
+                <button type="button" class="btn btn-ghost" onclick="closeModal('registerModal')">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="toastContainer"></div>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
